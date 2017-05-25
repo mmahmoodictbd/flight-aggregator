@@ -1,4 +1,4 @@
-package com.travix.medusa.test.domain.crazyair;
+package com.travix.medusa.busyflights.domain.crazyair;
 
 public class CrazyAirResponse {
 

@@ -1,4 +1,4 @@
-package com.travix.medusa.test.domain.toughjet;
+package com.travix.medusa.busyflights.domain.toughjet;
 
 public class ToughJetRequest {
 

@@ -1,12 +1,12 @@
-package com.travix.medusa.test.domain.busyflights;
+package com.travix.medusa.busyflights.domain.crazyair;
 
-public class BusyFlightsRequest {
+public class CrazyAirRequest {
 
     private String origin;
     private String destination;
     private String departureDate;
     private String returnDate;
-    private int numberOfPassengers;
+    private int passengerCount;
 
     public String getOrigin() {
         return origin;
@@ -40,11 +40,11 @@ public class BusyFlightsRequest {
         this.returnDate = returnDate;
     }
 
-    public int getNumberOfPassengers() {
-        return numberOfPassengers;
+    public int getPassengerCount() {
+        return passengerCount;
     }
 
-    public void setNumberOfPassengers(final int numberOfPassengers) {
-        this.numberOfPassengers = numberOfPassengers;
+    public void setPassengerCount(final int passengerCount) {
+        this.passengerCount = passengerCount;
     }
 }
