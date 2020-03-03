@@ -1,0 +1,91 @@
+### Common
+
+spring:
+  application:
+    name: BusyFlightsService
+  profiles:
+    active: dev, stub
+  resources:
+    add-mappings: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+
+logging:
+  level:
+    root: INFO
+
+
+integration:
+  crazyair:
+    # THIS IS AN EXAMPLE. CHANGE TO PROPER URL
+    searchUrl: https://crazyair.com/search
+    # THIS IS AN EXAMPLE. CHANGE TO PROPER AUTH
+    auth:
+      apiKey: dummyApiKey
+      apiSecret: dummyApiSecret
+    resttemplate:
+      connectionTimeoutMs: 5000
+      readTimeoutMs: 5000
+  toughjet:
+    # THIS IS AN EXAMPLE. CHANGE TO PROPER URL
+    searchUrl: https://toughjet.com/search
+    # THIS IS AN EXAMPLE. CHANGE TO PROPER AUTH
+    auth:
+      username: dummyUser
+      password: dummyPassword
+    resttemplate:
+      connectionTimeout: 5000
+      readTimeout: 5000
+---
+
+### Dev profile
+
+spring:
+  profiles: dev
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    com.unloadbrain: DEBUG
+
+---
+
+### Prod profile
+
+spring:
+  profiles: prod
+
+logging:
+  level:
+    com.unloadbrain: INFO
+
+---
+
+### Integration test profile
+
+spring:
+  profiles: it
+  main:
+    allow-bean-definition-overriding: true
+  http:
+    log-request-details: true
+
+logging:
+  level:
+    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
+
+---
+
+### Stub profile
+
+spring:
+  profiles: stub
+
+integration:
+  crazyair:
+    searchUrl: http://localhost:2345/search
+  toughjet:
+    searchUrl: http://localhost:2346/search
+
+---
