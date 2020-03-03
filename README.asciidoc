@@ -68,7 +68,7 @@ $ mvn spring-boot:run
 ###### Quick test
 
 Following response is merged response from CrazyAir and ToughJet
-When Stub (active profile: stub) is being setup, you can make following request:
+When Stub (**active profile: stub**) is being setup, you can make following request:
 ```
 curl --location --request POST 'localhost:8080/api/search' \
 --header 'Content-Type: application/json' \
@@ -122,11 +122,12 @@ example response
 ]
 ```
 
-CrazyAir Stub:
+Stubbed CrazyAir request:
 ```
 curl --location --request POST 'localhost:2345/search'
 ```
-example response
+
+Stubbed response from `src/main/resources/stubs/crazyair.response.json`:
 ```
 [
   {
@@ -150,11 +151,12 @@ example response
 ]
 ```
 
-ToughJet Stub:
+Stubbed ToughJet request:
 ```
-curl --location --request POST 'localhost:2345/search'
+curl --location --request POST 'localhost:2346/search'
 ```
-example response
+
+Stubbed response from `src/main/resources/stubs/toughjet.response.json`:
 ```
 [
   {
