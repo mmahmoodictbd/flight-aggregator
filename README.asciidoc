@@ -1,0 +1,214 @@
+# Flight Aggregator
+
+
+###### Motivation
+
+Implemented code would be a nice example of aggregating flight APIs, merging API responses into one. This project is an link:docs/PROBLEM_STATEMENT.md[assignment].
+
+
+### Features
+
+Flight Aggregator provides: Fetch flight results from multiple sources in parallel, merge when last request complete with timeout.
+
+image::docs/images/sequence-diagram.png[sequence-diagram screenshot]
+
+
+### Design Decisions
+
+- Authentication and authorization is not taking into consideration.
+- Non-blocking reactive approach.
+- Independent integration module provided a decoupled solution.
+- Integration services are completely unaware of aggregator (aka `busy-flights-service`) service.
+- Aggregator (aka `busy-flights-service`) is also unaware of integration services (e.g. crazyair-integration-service). All we need to do, is to make it available in classpath.
+
+
+### Modules Introduction
+
+- `busy-flights-service`: Flight aggregator reactive APIs.
+- `integration-services`:
+  * `integration-service-spec`: Contains the contract in between `busy-flights-service` and third-party APIs(e.g. CrazyAir).
+  * `crazyair-integration-service`: Fetch search results from CrazyAir, an example integration service.
+  * `toughjet-integration-service`: Fetch search results from ToughJet, an example integration service.
+
+
+### Improvements to make
+
+- `IATACodeValidator` is not implemented yet.
+- Improve architectural design, completed the project in around 15 hours.
+- Code improvements
+  * Add end-to-end tests. Cover more unit tests.
+  * Handle failure scenario properly. When integration (CrazyAir/ToughJet) fails, logs being written, could create alert using ELK or EFK.
+  * Improve logging.
+- Build docker image (plugin already added in the pom).
+- Generate and check OWASP report to find vulnerable component.
+- Write Gatling performance tests.
+
+### How to run
+
+
+###### Prerequisite
+- JDK 11 (Tested with OpenJDK 11.0.6)
+- Maven 3.6.x+
+
+###### Build
+```
+$ mvn clean compile install
+```
+
+###### Run
+```
+$ java -jar busy-flights-service/target/busy-flights-service.jar
+```
+or
+```
+$ cd busy-flights-service
+$ mvn spring-boot:run
+```
+
+###### Quick test
+
+Following response is merged response from CrazyAir and ToughJet
+When Stub (active profile: stub) is being setup, you can make following request:
+```
+curl --location --request POST 'localhost:8080/api/search' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "origin": "DAC",
+    "destination": "AMS",
+    "departureDate": "2021-01-01",
+    "returnDate": "2021-01-20",
+    "numberOfPassengers": 1
+}'
+```
+example response
+```
+[
+    {
+        "airlineName": "Turkish Airlines",
+        "supplier": "ToughJet",
+        "fare": "760.00",
+        "departureAirportCode": "DAC",
+        "destinationAirportCode": "AMS",
+        "departureDateTime": "2021-01-01T09:30:00",
+        "arrivalDateTime": "2021-01-01T19:45:00"
+    },
+    {
+        "airlineName": "KLM",
+        "supplier": "CrazyAir",
+        "fare": "800.00",
+        "departureAirportCode": "DAC",
+        "destinationAirportCode": "AMS",
+        "departureDateTime": "2021-01-01T10:15:30",
+        "arrivalDateTime": "2021-01-01T20:45:00"
+    },
+    {
+        "airlineName": "KLM",
+        "supplier": "ToughJet",
+        "fare": "910.00",
+        "departureAirportCode": "DAC",
+        "destinationAirportCode": "AMS",
+        "departureDateTime": "2021-01-01T10:15:30",
+        "arrivalDateTime": "2021-01-01T20:45:00"
+    },
+    {
+        "airlineName": "Turkish Airlines",
+        "supplier": "CrazyAir",
+        "fare": "1000.00",
+        "departureAirportCode": "DAC",
+        "destinationAirportCode": "AMS",
+        "departureDateTime": "2021-01-01T09:15:30",
+        "arrivalDateTime": "2021-01-01T20:45:00"
+    }
+]
+```
+
+CrazyAir Stub:
+```
+curl --location --request POST 'localhost:2345/search'
+```
+example response
+```
+[
+  {
+    "airline": "KLM",
+    "departureAirportCode": "DAC",
+    "destinationAirportCode": "AMS",
+    "departureDate": "2021-01-01T10:15:30",
+    "arrivalDate": "2021-01-01T20:45:00",
+    "price": 800.20,
+    "cabinClass": "E"
+  },
+  {
+    "airline": "Turkish Airlines",
+    "departureAirportCode": "DAC",
+    "destinationAirportCode": "AMS",
+    "departureDate": "2021-01-01T09:15:30",
+    "arrivalDate": "2021-01-01T20:45:00",
+    "price": 1000.00,
+    "cabinClass": "E"
+  }
+]
+```
+
+ToughJet Stub:
+```
+curl --location --request POST 'localhost:2345/search'
+```
+example response
+```
+[
+  {
+    "carrier": "KLM",
+    "departureAirportName": "DAC",
+    "arrivalAirportName": "AMS",
+    "outboundDateTime": "2021-01-01T10:15:30",
+    "inboundDateTime": "2021-01-01T20:45:00",
+    "basePrice": 890.00,
+    "tax": 40,
+    "discount": 2
+  },
+  {
+    "carrier": "Turkish Airlines",
+    "departureAirportName": "DAC",
+    "arrivalAirportName": "AMS",
+    "outboundDateTime": "2021-01-01T09:30:00",
+    "inboundDateTime": "2021-01-01T19:45:00",
+    "basePrice": 800.20,
+    "tax": 40,
+    "discount": 10
+  }
+]
+```
+
+
+### Development
+##### How to run tests
+
+###### How to run unit tests
+To run the unit tests, execute the following commands
+```
+mvn clean test-compile test
+```
+
+###### How to run integration tests
+To run the integration tests, execute the following commands
+```
+mvn clean test-compile verify -DskipTests=true
+```
+
+###### How to run both unit tests and integration tests
+To run the integration tests, execute the following commands
+```
+mvn clean test-compile verify
+```
+
+###### How to run pitest
+To run the mutation tests, execute the following commands
+```
+mvn clean install test-compile test
+mvn org.pitest:pitest-maven:mutationCoverage
+```
+
+
+### Copyright & License
+Licensed under the MIT License, see the link:LICENSE[LICENSE] file for details.
