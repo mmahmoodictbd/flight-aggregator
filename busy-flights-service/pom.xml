@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.unloadbrain.assignment</groupId>
+        <artifactId>flight-aggregator</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <groupId>com.unloadbrain.assignment</groupId>
+    <artifactId>busy-flights-service</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>Busy Flights Service</name>
+    <description>Flight aggregator APIs.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.unloadbrain.assignment</groupId>
+            <artifactId>integration-service-spec</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.unloadbrain.assignment</groupId>
+            <artifactId>crazyair-integration-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.unloadbrain.assignment</groupId>
+            <artifactId>toughjet-integration-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- Stub purpose-->
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>2.26.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
