@@ -1,0 +1,43 @@
+@startuml
+
+hide footbox
+
+actor "User" as USER
+participant "**Web APIs**\nbusy-flights-service" as WebAPIs
+participant SearchService as SS
+participant "**Third-party Integration**\ncrazyair-integration-service\ntoughjet-integration-service\nmore..." as INTG
+participant "**CrazyAir API Server**" as CRAZYAIR
+participant "**ToughJet API Server**" as TOUGHJET
+participant "**More...**" as MORE
+
+activate WebAPIs
+activate SS
+activate INTG
+
+USER -> WebAPIs : POST /api/search
+WebAPIs -> SS
+SS -> INTG : parallel calls to integration services
+
+activate CRAZYAIR
+INTG --> CRAZYAIR : remote call
+CRAZYAIR --> INTG : CrazyAir search results
+INTG -> SS : return CrazyAir flight search results
+deactivate CRAZYAIR
+
+activate TOUGHJET
+INTG --> TOUGHJET : remote call
+TOUGHJET --> INTG : ToughJet search results
+INTG -> SS : return ToughJet flight search results
+deactivate TOUGHJET
+
+activate MORE
+INTG --> MORE : remote call
+MORE --> INTG : search results
+INTG -> SS : return flight search results
+deactivate MORE
+
+SS -> SS: **merge search results and sort**
+SS -> WebAPIs
+WebAPIs -> USER : HTTP 201\nwith merged search results
+
+@enduml
