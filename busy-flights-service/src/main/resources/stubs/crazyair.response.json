@@ -1,0 +1,20 @@
+[
+  {
+    "airline": "KLM",
+    "departureAirportCode": "DAC",
+    "destinationAirportCode": "AMS",
+    "departureDate": "2021-01-01T10:15:30",
+    "arrivalDate": "2021-01-01T20:45:00",
+    "price": 800.20,
+    "cabinClass": "E"
+  },
+  {
+    "airline": "Turkish Airlines",
+    "departureAirportCode": "DAC",
+    "destinationAirportCode": "AMS",
+    "departureDate": "2021-01-01T09:15:30",
+    "arrivalDate": "2021-01-01T20:45:00",
+    "price": 1000.00,
+    "cabinClass": "E"
+  }
+]

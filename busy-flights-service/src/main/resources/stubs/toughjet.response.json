@@ -1,0 +1,23 @@
+[
+  {
+    "carrier": "KLM",
+    "departureAirportName": "DAC",
+    "arrivalAirportName": "AMS",
+    "outboundDateTime": "2021-01-01T10:15:30",
+    "inboundDateTime": "2021-01-01T20:45:00",
+    "basePrice": 890.00,
+    "tax": 40,
+    "discount": 2
+  },
+  {
+    "carrier": "Turkish Airlines",
+    "departureAirportName": "DAC",
+    "arrivalAirportName": "AMS",
+    "outboundDateTime": "2021-01-01T09:30:00",
+    "inboundDateTime": "2021-01-01T19:45:00",
+    "basePrice": 800.20,
+    "tax": 40,
+    "discount": 10
+  }
+]
+
